@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pubg-fetch-data
+  namespace: pubg-app
+spec:
+  schedule: "0 8 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: my-cronjob
+        spec:
+          containers:
+          - name: pubg-base-image
+            image: pubg-image:latest
+            imagePullPolicy: Never # needed for local minikube pull
+            args:
+              - "python"
+              - "-m"
+              - "pubg.jobs"
+            envFrom:
+            - secretRef:
+                name: pubg-secret
+            env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-pubg
+                  key: root-user
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-pubg
+                  key: root-password
+            - name: MINIO_ENDPOINT
+              value: "minio-pubg:9000"
+          restartPolicy: Never
+        

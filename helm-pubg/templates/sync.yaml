@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sync-app-deployment
+  namespace: pubg-app
+spec:
+  schedule: "*/20 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: my-cronjob
+        spec:
+          containers:
+          - name: curl-container
+            image: curlimages/curl:latest
+            command: ["sh", "-c"]
+            args:
+            - |
+              # Make the API call and store the response in a variable
+              response=$(curl --location --request POST 'pubg-app-service/refresh_all_data')
+
+              # Echo the response
+              echo "API Response: $response"
+          restartPolicy: Never
