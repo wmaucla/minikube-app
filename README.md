@@ -18,3 +18,21 @@ Designed to be a fully functioning, standalone app created from scratch in a min
     * Redis for low latency storage
 * Python app
 * Python batch jobs
+
+## Sample Images
+
+App UI 
+
+![](images/app.png)
+
+Grafana Charts
+
+![](images/grafana.png)
+
+Cluster Setup View
+
+![](images/k9s-pods.png)
+
+Minio Data
+
+![](images/minio.png)
